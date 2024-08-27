@@ -7,11 +7,11 @@ import java.util.Set;
 public class Empresa {
     private List<SalaDeReuniao> salas;
 
-    Empresa() {
+    public Empresa() {
 
     }
 
-    Empresa(List<SalaDeReuniao> salas) {
+    public Empresa(List<SalaDeReuniao> salas) {
         this.salas = salas;
     }
 
@@ -27,4 +27,7 @@ public class Empresa {
         salas.get(id).reservarSala(dataReuniao, participantes);
     }
 
+    public List<SalaDeReuniao> listarSalas() {
+        return salas;
+    }
 }

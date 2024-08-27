@@ -8,15 +8,17 @@ import java.util.Map;
 import java.util.Set;
 
 public class SalaDeReuniao implements SalaDeReuniaoInterface {
+    private int id;
     private Map<LocalDateTime, Set<String>> reservas;
     private TipoDeSala tipo;
 
-    SalaDeReuniao(Map<LocalDateTime, Set<String>> reservas, TipoDeSala tipo) {
+    public SalaDeReuniao(int id, Map<LocalDateTime, Set<String>> reservas, TipoDeSala tipo) {
+        this.id = id;
         this.reservas = reservas;
         this.tipo = tipo;
     }
 
-    SalaDeReuniao() {
+    public SalaDeReuniao() {
 
     }
 
