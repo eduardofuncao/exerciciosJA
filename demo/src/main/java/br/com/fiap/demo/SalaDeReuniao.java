@@ -1,5 +1,6 @@
 package br.com.fiap.demo;
 
+import br.com.fiap.demo.exceptions.ReservaNaoEncontradaException;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
@@ -41,18 +42,28 @@ public class SalaDeReuniao implements SalaDeReuniaoInterface {
     @Override
     public void reservarSala(LocalDateTime dataInicio, Set<String> participantes) {
         //TODO criar exceção para tentativa de reserva em horário já reservado
+
         reservas.put(dataInicio, participantes);
     }
 
     @Override
     public void cancelarReserva(LocalDateTime dataReuniao) {
-        //TODO exceção para cancelamento de reunião não existe
-        reservas.remove(dataReuniao);
+        if (reservas.containsKey(dataReuniao)) {
+            reservas.remove(dataReuniao);
+        } else {
+            throw new ReservaNaoEncontradaException("Reserva não encontrada para a data " + dataReuniao);
+        }
+
     }
 
     @Override
     public Map<LocalDateTime, Set<String>> listarReservas() {
         return reservas;
+    }
+
+    @Override
+    public Map<LocalDateTime, Set<String>> listarReservaPorData(LocalDateTime dataReuniao) {
+        return Map.of(dataReuniao, reservas.get(dataReuniao));
     }
 
     @Override

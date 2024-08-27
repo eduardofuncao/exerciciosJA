@@ -21,6 +21,10 @@ public class SalaDeReuniaoController {
 
     Empresa empresa = new Empresa(salas);
 
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
+
+    //TODO endpoint post para criar as salas
+
     @GetMapping
     public ResponseEntity<List<SalaDeReuniao>> buscarSalasDaEmpresa() {
         return ResponseEntity.ok(salas);
@@ -37,11 +41,29 @@ public class SalaDeReuniaoController {
     }
 
     @PostMapping("{id}/reservas")
-    public void criarReserva(@PathVariable int id, @RequestBody Map<String, Set<String>> reservas) {
+    public ResponseEntity<Map<LocalDateTime, Set<String>>> criarReserva(@PathVariable int id, @RequestBody Map<String, Set<String>> reservas) {
+        Map<LocalDateTime, Set<String>> reservasCriadas = new HashMap<>();
         reservas.forEach((dataReuniao, participantes) -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
             LocalDateTime dataReuniaoFormatted = LocalDateTime.parse(dataReuniao, formatter);
             empresa.getSalas().get(id).reservarSala(dataReuniaoFormatted, participantes);
+            reservasCriadas.put(dataReuniaoFormatted, participantes);
         });
+        return ResponseEntity.ok(reservasCriadas);
     }
+
+    @GetMapping("/{id}/reservas/{dataReserva}")
+    public ResponseEntity<Map<LocalDateTime, Set<String>>> buscarReservaPorData(@PathVariable int id, @PathVariable String dataReserva) {
+        LocalDateTime formattedDate = LocalDateTime.parse(dataReserva, formatter);
+        return ResponseEntity.ok(empresa.getSalas().get(id).listarReservaPorData(formattedDate));
+    }
+
+
+    @DeleteMapping("/{id}/reservas/{dataReserva}")
+    public ResponseEntity<Void> deletarReservaPorData(@PathVariable int id, @PathVariable String dataReserva) {
+        LocalDateTime formattedDate = LocalDateTime.parse(dataReserva, formatter);
+        empresa.getSalas().get(id).cancelarReserva(formattedDate);
+        return ResponseEntity.ok().build();
+    }
+
+    //TODO @PutMapping("/{id}/reservas/{dataReserva}")
 }
