@@ -14,16 +14,15 @@ import java.util.*;
 @RestController
 @RequestMapping("/fiap/salas")
 public class SalaDeReuniaoController {
-    Map<LocalDateTime, Set<String>> reservas = new HashMap<>();
-    SalaDeReuniao sala1 = new SalaDeReuniao(1, reservas, TipoDeSala.MEDIA );
-    SalaDeReuniao sala2 = new SalaDeReuniao(2, reservas, TipoDeSala.PEQUENA );
-    List<SalaDeReuniao> salas = Arrays.asList(sala1, sala2);
-
-    Empresa empresa = new Empresa(salas);
-
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
 
-    //TODO endpoint post para criar as salas
+    List<SalaDeReuniao> salas = new ArrayList<>();
+    Empresa empresa = new Empresa(salas);
+
+    @PostMapping
+    public ResponseEntity<SalaDeReuniao> criarSalaDeReuniao(@RequestBody SalaDeReuniao sala) {
+        return ResponseEntity.ok(empresa.criarSalaDeReuniao(sala.getTipo()));
+    }
 
     @GetMapping
     public ResponseEntity<List<SalaDeReuniao>> buscarSalasDaEmpresa() {
@@ -35,9 +34,26 @@ public class SalaDeReuniaoController {
         return ResponseEntity.ok(salas.get(id));
     }
 
+    /*/
     @GetMapping("/{id}/reservas")
     public ResponseEntity<Map<LocalDateTime, Set<String>>> buscarReservas(@PathVariable int id) {
         return ResponseEntity.ok(empresa.getSalas().get(id).listarReservas());
+    }
+    /*/
+
+    @GetMapping("/{id}/reservas")
+    public ResponseEntity<Map<LocalDateTime, Set<String>>> buscarReservasEntreDatas(@PathVariable int id, @RequestParam(required = false) String tipo, @RequestParam(required = false) String dataInicio, @RequestParam(required = false) String dataFim) {
+        if (tipo!=null && tipo.equals("ordenado")) {
+            return ResponseEntity.ok(empresa.getSalas().get(id).listarReservasOrdenadas());
+        }
+
+        if (dataInicio!=null && dataFim!=null) {
+            LocalDateTime dataInicioFormatada = LocalDateTime.parse(dataInicio, formatter);
+            LocalDateTime dataFimFormatada = LocalDateTime.parse(dataFim, formatter);
+            return ResponseEntity.ok(empresa.getSalas().get(id).listarReservasEntreDatas(dataInicioFormatada, dataFimFormatada));
+        } else {
+            return ResponseEntity.ok(empresa.getSalas().get(id).listarReservas());
+        }
     }
 
     @PostMapping("{id}/reservas")
@@ -65,5 +81,14 @@ public class SalaDeReuniaoController {
         return ResponseEntity.ok().build();
     }
 
-    //TODO @PutMapping("/{id}/reservas/{dataReserva}")
+    //TODO retornar objeto após mudança
+    @PutMapping("/{id}/reservas/{dataReserva}")
+    public void atualizarReserva(@PathVariable int id, @PathVariable String dataReserva, @RequestBody Map<String, Set<String>> reserva) {
+        LocalDateTime formattedDate = LocalDateTime.parse(dataReserva, formatter);
+        reserva.forEach((dataReuniao, participantes) -> {
+            LocalDateTime dataReuniaoFormatted = LocalDateTime.parse(dataReuniao, formatter);
+            empresa.getSalas().get(id).atualizarReserva(formattedDate, dataReuniaoFormatted, participantes);
+        });
+        //empresa.getSalas().get(id).atualizarReserva();
+    }
 }

@@ -1,7 +1,9 @@
 package br.com.fiap.demo;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Empresa {
@@ -23,11 +25,10 @@ public class Empresa {
         this.salas = salas;
     }
 
-    public void reservarSalaPorId(int id, LocalDateTime dataReuniao, Set<String> participantes) {
-        salas.get(id).reservarSala(dataReuniao, participantes);
-    }
-
-    public List<SalaDeReuniao> listarSalas() {
-        return salas;
+    public SalaDeReuniao criarSalaDeReuniao(TipoDeSala tipo) {
+        Map<LocalDateTime, Set<String>> reservas = new HashMap<>();
+        SalaDeReuniao sala = new SalaDeReuniao(salas.size(), reservas, tipo);
+        salas.add(sala);
+        return sala;
     }
 }

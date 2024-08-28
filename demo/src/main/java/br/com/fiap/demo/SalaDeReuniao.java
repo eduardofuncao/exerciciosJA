@@ -1,12 +1,14 @@
 package br.com.fiap.demo;
 
 import br.com.fiap.demo.exceptions.ReservaNaoEncontradaException;
-import org.springframework.cglib.core.Local;
+import br.com.fiap.demo.exceptions.SalaJaReservadaException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SalaDeReuniao implements SalaDeReuniaoInterface {
     private int id;
@@ -27,6 +29,14 @@ public class SalaDeReuniao implements SalaDeReuniaoInterface {
         return reservas;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setReservas(Map<LocalDateTime, Set<String>> reservas) {
         this.reservas = reservas;
     }
@@ -41,9 +51,17 @@ public class SalaDeReuniao implements SalaDeReuniaoInterface {
 
     @Override
     public void reservarSala(LocalDateTime dataInicio, Set<String> participantes) {
-        //TODO criar exceção para tentativa de reserva em horário já reservado
-
-        reservas.put(dataInicio, participantes);
+        AtomicBoolean allowReservation = new AtomicBoolean(true);
+        reservas.forEach((inicio, participantes1) -> {
+            LocalDateTime fim = inicio.plusHours(1);
+            if (dataInicio.isAfter(inicio) && dataInicio.isBefore(fim)) {
+                allowReservation.set(false);
+                throw new SalaJaReservadaException("Sala já reservada no período da reunião");
+            }
+        });
+        if (allowReservation.get()) {
+            reservas.put(dataInicio, participantes);
+        }
     }
 
     @Override
@@ -57,6 +75,12 @@ public class SalaDeReuniao implements SalaDeReuniaoInterface {
     }
 
     @Override
+    public void atualizarReserva(LocalDateTime dataReuniao, LocalDateTime dataNova, Set<String> participantes) {
+        reservas.remove(dataReuniao);
+        reservas.put(dataNova, participantes);
+    }
+
+    @Override
     public Map<LocalDateTime, Set<String>> listarReservas() {
         return reservas;
     }
@@ -67,7 +91,7 @@ public class SalaDeReuniao implements SalaDeReuniaoInterface {
     }
 
     @Override
-    public Map<LocalDateTime, Set<String>> buscarReservas(LocalDateTime inicio, LocalDateTime fim) {
+    public Map<LocalDateTime, Set<String>> listarReservasEntreDatas(LocalDateTime inicio, LocalDateTime fim) {
         Map<LocalDateTime, Set<String>> reservasNoIntervalo = new HashMap<>();
         reservas.forEach((dataInicio, participantes) -> {
             //LocalDateTime dataFim = dataInicio.plusHours(1);
@@ -81,6 +105,7 @@ public class SalaDeReuniao implements SalaDeReuniaoInterface {
 
     @Override
     public Map<LocalDateTime, Set<String>> listarReservasOrdenadas() {
-        return Map.of();
+        Map<LocalDateTime, Set<String>> reservasOrdenadas = new TreeMap<>(reservas);
+        return reservasOrdenadas;
     }
 }
