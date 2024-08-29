@@ -3,6 +3,7 @@ package com.goivo.api_gerenciador_tarefas.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class TarefasController {
     @PostMapping
     public ResponseEntity<Tarefa> criarTarefa(@RequestBody Tarefa tarefa) {
         Tarefa tarefaCriada = gerenciadorDeTarefas.criarTarefa(tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getDataCriacao());
-        return ResponseEntity.ok(tarefaCriada);
+        return ResponseEntity.status(201).body(tarefaCriada);
     }
 
     @GetMapping
@@ -47,4 +48,9 @@ public class TarefasController {
         return ResponseEntity.ok(tarefaAtualizada);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirTarefa(@PathVariable("id") int id) {
+        gerenciadorDeTarefas.excluirTarefaporId(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -14,6 +14,7 @@ public interface GerenciadorDeTarefasInterface {
     List<Tarefa> listarTarefas(String filtro);
     List<String> listarNomesTarefas();
     Map<StatusTarefa, List<Tarefa>> agruparPorStatus();
-    int contarTarefasPorStatus(String status);
 
+    int contarTarefasPorStatus(String status);
+    int geraId();
 }

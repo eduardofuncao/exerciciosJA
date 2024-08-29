@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
     private List<Tarefa> tarefas = new ArrayList<>();
+    private int id = 0;
 
     public GerenciadorDeTarefas() {
     }
@@ -24,6 +25,7 @@ public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
         this.tarefas = tarefas;
     }
 
+    // TODO buscar por id do objeto 
     @Override
     public Tarefa atualizarTarefaporId(int id, String titulo, String descricao, LocalDateTime dataCriacao) {
         return tarefas.get(id).atualizarTarefa(titulo, descricao, dataCriacao);
@@ -31,16 +33,18 @@ public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
 
     @Override
     public Tarefa criarTarefa(String titulo, String descricao, LocalDateTime dataCriacao) {
-        Tarefa tarefaCriada = new Tarefa(tarefas.size(), titulo, dataCriacao,descricao, StatusTarefa.PENDENTE);
+        Tarefa tarefaCriada = new Tarefa(geraId(), titulo, dataCriacao,descricao, StatusTarefa.PENDENTE);
         tarefas.add(tarefaCriada);
         return tarefaCriada;
     }
 
+    // TODO buscar por id do objeto 
     @Override
     public void excluirTarefaporId(int id) {
         tarefas.remove(id);
     }
 
+    // TODO buscar por id do objeto
     @Override
     public Tarefa getTarefaporId(int id) {
         return tarefas.get(id);
@@ -95,5 +99,10 @@ public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
             }
             return acc;
         }, Integer::sum);
+    }
+
+    @Override
+    public int geraId() {
+        return id++;
     }
 }
