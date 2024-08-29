@@ -1,5 +1,8 @@
 package com.goivo.api_gerenciador_tarefas;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,27 +25,74 @@ public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
     }
 
     @Override
-    public List<Tarefa> listarTarefas() {
-        return List.of();
+    public Tarefa atualizarTarefaporId(int id, String titulo, String descricao, LocalDateTime dataCriacao) {
+        return tarefas.get(id).atualizarTarefa(titulo, descricao, dataCriacao);
     }
 
     @Override
-    public List<Tarefa> listarTarefas(String filtro) {
-        return List.of();
+    public Tarefa criarTarefa(String titulo, String descricao, LocalDateTime dataCriacao) {
+        Tarefa tarefaCriada = new Tarefa(tarefas.size(), titulo, dataCriacao,descricao, StatusTarefa.PENDENTE);
+        return tarefaCriada;
+    }
+
+    @Override
+    public void excluirTarefaporId(int id) {
+        tarefas.remove(id);
+    }
+
+    @Override
+    public Tarefa getTarefaporId(int id) {
+        return tarefas.get(id);
+    }
+
+    @Override
+    public List<Tarefa> listarTarefas() {
+        return tarefas;
+    }
+
+    @Override
+    public List<Tarefa> listarTarefas(String filtroStatus) {
+        List<Tarefa> tarefasFiltradas = new ArrayList<>();
+        StatusTarefa status = StatusTarefa.valueOf(filtroStatus);
+        for (Tarefa tarefa: tarefas) {
+            if (tarefa.getStatus().equals(status)) {
+                tarefasFiltradas.add(tarefa);
+            }
+        }
+        return tarefasFiltradas;
     }
 
     @Override
     public List<String> listarNomesTarefas() {
-        return List.of();
+        List<String> nomesTarefas = new ArrayList<>();
+        for (Tarefa tarefa: tarefas) {
+            nomesTarefas.add(tarefa.getTitulo());
+        }
+        return nomesTarefas;
     }
 
     @Override
-    public Map<StatusTarefa, List<Tarefa>> agruparPorStatus(String status) {
-        return Map.of();
+    public Map<StatusTarefa, List<Tarefa>> agruparPorStatus() {
+        Map<StatusTarefa, List<Tarefa>> tarefasPorStatus = new HashMap<>();
+        for (StatusTarefa status: StatusTarefa.values()) {
+            tarefasPorStatus.put(status, new ArrayList<Tarefa>());
+        }
+        
+        for (Tarefa tarefa: tarefas) {
+            StatusTarefa status = tarefa.getStatus();
+            tarefasPorStatus.get(status).add(tarefa);
+        }
+
+        return tarefasPorStatus;
     }
 
     @Override
     public int contarTarefasPorStatus(String status) {
-        return 0;
+        return tarefas.stream().reduce(0, (acc, tarefa) -> {
+            if (tarefa.getStatus() == StatusTarefa.valueOf(status)) {
+                return acc + 1;
+            }
+            return acc;
+        }, Integer::sum);
     }
 }

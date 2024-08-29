@@ -4,13 +4,9 @@ import java.time.LocalDateTime;
 
 public interface TarefaInterface {
     /*
-    id, titulo, descricao, data de criacao
+    id, titulo, descricao, data de criacao, isConcluida
      */
 
-    Tarefa criarTarefa(String titulo, String descricao, LocalDateTime dataCriacao);
-    Tarefa atualizarTarefaPorId(int id);
-    void excluirTarefaPorId(int id);
-    Tarefa getTarefaPorId(int id);
-
-    Tarefa marcarComoConcluida(int id);
+    Tarefa atualizarTarefa(String titulo, String descricao, LocalDateTime dataCriacao);
+    Tarefa marcarComoConcluida();
 }

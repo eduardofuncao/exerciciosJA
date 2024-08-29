@@ -7,12 +7,14 @@ public class Tarefa implements TarefaInterface{
     private String titulo;
     private String descricao;
     private LocalDateTime dataCriacao;
+    private StatusTarefa status;
 
-    public Tarefa(int id, String titulo, LocalDateTime dataCriacao, String descricao) {
+    public Tarefa(int id, String titulo, LocalDateTime dataCriacao, String descricao, StatusTarefa status) {
         this.id = id;
         this.titulo = titulo;
         this.dataCriacao = dataCriacao;
         this.descricao = descricao;
+        this.status = status;
     }
 
     public Tarefa() {
@@ -21,6 +23,7 @@ public class Tarefa implements TarefaInterface{
     public int getId() {
         return id;
     }
+
 
     public void setId(int id) {
         this.id = id;
@@ -49,29 +52,27 @@ public class Tarefa implements TarefaInterface{
     public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
+    
+    public StatusTarefa getStatus() {
+        return status;
+    }
 
-    @Override
-    public Tarefa criarTarefa(String titulo, String descricao, LocalDateTime dataCriacao) {
-        return null;
+    public void setStatus(StatusTarefa status) {
+        this.status = status;
     }
 
     @Override
-    public Tarefa atualizarTarefaPorId(int id) {
-        return null;
+    public Tarefa atualizarTarefa(String titulo, String descricao, LocalDateTime dataCriacao) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.dataCriacao = dataCriacao;
+        return this;
     }
 
     @Override
-    public void excluirTarefaPorId(int id) {
-
+    public Tarefa marcarComoConcluida() {
+        this.setStatus(StatusTarefa.CONCLUIDA);
+        return this;
     }
 
-    @Override
-    public Tarefa getTarefaPorId(int id) {
-        return null;
-    }
-
-    @Override
-    public Tarefa marcarComoConcluida(int id) {
-        return null;
-    }
 }
