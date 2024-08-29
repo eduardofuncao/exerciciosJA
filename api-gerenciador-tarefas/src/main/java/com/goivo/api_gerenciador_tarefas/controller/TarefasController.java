@@ -22,11 +22,12 @@ public class TarefasController {
 
     @PostMapping
     public ResponseEntity<Tarefa> criarTarefa(@RequestBody Tarefa tarefa) {
-        return ResponseEntity.ok(gerenciadorDeTarefas.criarTarefa(tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getDataCriacao()));
+        Tarefa tarefaCriada = gerenciadorDeTarefas.criarTarefa(tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getDataCriacao());
+        return ResponseEntity.ok(tarefaCriada);
     }
 
     @GetMapping
-    public ResponseEntity<List<Tarefa>> listarTarefas(@RequestParam String filtroStatus) {
+    public ResponseEntity<List<Tarefa>> listarTarefas(@RequestParam(value = "status", required = false) String filtroStatus) {
         if (filtroStatus == null) {
             return ResponseEntity.ok(gerenciadorDeTarefas.listarTarefas());
         }

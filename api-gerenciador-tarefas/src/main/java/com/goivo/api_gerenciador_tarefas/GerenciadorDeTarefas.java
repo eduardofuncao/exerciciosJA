@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
-    private List<Tarefa> tarefas;
+    private List<Tarefa> tarefas = new ArrayList<>();
 
     public GerenciadorDeTarefas() {
     }
@@ -32,6 +32,7 @@ public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
     @Override
     public Tarefa criarTarefa(String titulo, String descricao, LocalDateTime dataCriacao) {
         Tarefa tarefaCriada = new Tarefa(tarefas.size(), titulo, dataCriacao,descricao, StatusTarefa.PENDENTE);
+        tarefas.add(tarefaCriada);
         return tarefaCriada;
     }
 
