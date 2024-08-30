@@ -1,0 +1,246 @@
+{
+  "name": "api-gerencimanto-tarefas",
+  "version": "1",
+  "items": [
+    {
+      "type": "http",
+      "name": "delete tarefas por id",
+      "seq": 5,
+      "request": {
+        "url": "{{base_url}}/tarefas/0",
+        "method": "DELETE",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get tarefas com filtro",
+      "seq": 2,
+      "request": {
+        "url": "{{base_url}}/tarefas?status=PENDENTE",
+        "method": "GET",
+        "headers": [],
+        "params": [
+          {
+            "name": "status",
+            "value": "PENDENTE",
+            "type": "query",
+            "enabled": true
+          }
+        ],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get tarefas por id",
+      "seq": 3,
+      "request": {
+        "url": "{{base_url}}/tarefas/0",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get nomes tarefas",
+      "seq": 6,
+      "request": {
+        "url": "{{base_url}}/tarefas",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "post tarefas",
+      "seq": 1,
+      "request": {
+        "url": "{{base_url}}/tarefas",
+        "method": "POST",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"titulo\": \"oiiii\",\n  \"descricao\": \"essa é a descrição\",\n  \"dataCriacao\": \"2024-10-28T21:00\"\n}",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "put tarefas por id",
+      "seq": 4,
+      "request": {
+        "url": "{{base_url}}/tarefas/3",
+        "method": "PUT",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"titulo\": \"ASDLKFASLDKÇFJ\",\n  \"descricao\": \"essa é a descrição\",\n  \"dataCriacao\": \"2024-10-28T21:00\"\n}",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get agrupar tarefas status",
+      "seq": 8,
+      "request": {
+        "url": "{{base_url}}/tarefas/nomes",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get contar tarefas status",
+      "seq": 9,
+      "request": {
+        "url": "{{base_url}}/tarefas/agrupar",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "get concluir tarefas por id",
+      "seq": 10,
+      "request": {
+        "url": "{{base_url}}/tarefas/0",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    }
+  ],
+  "activeEnvironmentUid": "l9WmTVdcRAxOzxPuxe7f8",
+  "environments": [
+    {
+      "variables": [
+        {
+          "name": "base_url",
+          "value": "http://localhost:8080/api/v1",
+          "enabled": true,
+          "secret": false,
+          "type": "text"
+        }
+      ],
+      "name": "Base"
+    }
+  ],
+  "brunoConfig": {
+    "version": "1",
+    "name": "api-gerencimanto-tarefas",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ]
+  }
+}
