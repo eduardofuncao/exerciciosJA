@@ -9,7 +9,7 @@ public interface GerenciadorDeTarefasInterface {
     Tarefa atualizarTarefaporId(int id, String titulo, String descricao, LocalDateTime dataCriacao);
     void excluirTarefaporId(int id);
     Tarefa getTarefaporId(int id);
-    Tarefa marcarComoConcluida(int id);
+    Tarefa marcarComoConcluidaPorId(int id);
 
     List<Tarefa> listarTarefas();
     List<Tarefa> listarTarefas(String filtro);

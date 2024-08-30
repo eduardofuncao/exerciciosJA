@@ -91,8 +91,10 @@ public class TarefasController {
     
     @PutMapping("/{id}/concluir")
     public ResponseEntity<Tarefa> concluirTarefa(@PathVariable("id") int id) {
-        Tarefa tarefaConcluida = gerenciadorDeTarefas.marcarComoConcluida(id);
+        Tarefa tarefaConcluida = gerenciadorDeTarefas.marcarComoConcluidaPorId(id);
         return ResponseEntity.ok(tarefaConcluida);
     }
 
 }
+
+

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.goivo.api_gerenciador_tarefas.exceptions.TarefaNaoEncontradaException;
+
 public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
     private List<Tarefa> tarefas = new ArrayList<>();
     private int id = 0;
@@ -25,10 +27,9 @@ public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
         this.tarefas = tarefas;
     }
 
-    // TODO buscar por id do objeto 
     @Override
     public Tarefa atualizarTarefaporId(int id, String titulo, String descricao, LocalDateTime dataCriacao) {
-        return tarefas.get(id).atualizarTarefa(titulo, descricao, dataCriacao);
+        return getTarefaporId(id).atualizarTarefa(titulo, descricao, dataCriacao);
     }
 
     @Override
@@ -41,13 +42,16 @@ public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
     // TODO buscar por id do objeto 
     @Override
     public void excluirTarefaporId(int id) {
-        tarefas.remove(id);
+        int idPararemover = tarefas.indexOf(getTarefaporId(id));
+        tarefas.remove(idPararemover);
     }
 
-    // TODO buscar por id do objeto
     @Override
     public Tarefa getTarefaporId(int id) {
-        return tarefas.get(id);
+        Tarefa tarefaEncontrada = tarefas.stream()
+            .filter(tarefa -> tarefa.getId() == id)
+            .findFirst().orElseThrow(() -> new TarefaNaoEncontradaException("Tarefa com id " + id + " não encontrada"));
+        return tarefaEncontrada;
     }
 
     @Override
@@ -102,9 +106,8 @@ public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
     }
 
     @Override
-    public Tarefa marcarComoConcluida(int id) {
-        tarefas.get(id).setStatus(StatusTarefa.CONCLUIDA);
-        return tarefas.get(id);
+    public Tarefa marcarComoConcluidaPorId(int id) {
+        return getTarefaporId(id).marcarComoConcluida();
     }
 
     @Override

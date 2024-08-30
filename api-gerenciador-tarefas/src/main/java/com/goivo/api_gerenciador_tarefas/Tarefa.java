@@ -2,6 +2,8 @@ package com.goivo.api_gerenciador_tarefas;
 
 import java.time.LocalDateTime;
 
+import com.goivo.api_gerenciador_tarefas.exceptions.TarefaJaConcluidaException;
+
 public class Tarefa implements TarefaInterface{
     private int id;
     private String titulo;
@@ -71,6 +73,9 @@ public class Tarefa implements TarefaInterface{
 
     @Override
     public Tarefa marcarComoConcluida() {
+        if (this.getStatus() == StatusTarefa.CONCLUIDA) {
+            throw new TarefaJaConcluidaException("A tarefa com id " + this.getId() + " já foi concluída");
+        }
         this.setStatus(StatusTarefa.CONCLUIDA);
         return this;
     }
