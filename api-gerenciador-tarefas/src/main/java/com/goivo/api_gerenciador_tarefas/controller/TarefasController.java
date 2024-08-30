@@ -1,5 +1,6 @@
 package com.goivo.api_gerenciador_tarefas.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +25,21 @@ public class TarefasController {
 
     GerenciadorDeTarefas gerenciadorDeTarefas = new GerenciadorDeTarefas();
 
-
+/*
     @PostMapping
     public ResponseEntity<Tarefa> criarTarefa(@RequestBody Tarefa tarefa) {
         Tarefa tarefaCriada = gerenciadorDeTarefas.criarTarefa(tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getDataCriacao());
         return ResponseEntity.status(201).body(tarefaCriada);
+    }
+*/
+    @PostMapping
+    public ResponseEntity<List<Tarefa>> criarTarefa(@RequestBody List<Tarefa> tarefas) {
+        List<Tarefa> tarefasCriadas = new ArrayList<>();
+        for (Tarefa tarefa: tarefas) {
+            Tarefa tarefaCriada = gerenciadorDeTarefas.criarTarefa(tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getDataCriacao());
+            tarefasCriadas.add(tarefaCriada);
+        }
+        return ResponseEntity.status(201).body(tarefasCriadas);
     }
 
     @GetMapping
