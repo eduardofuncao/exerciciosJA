@@ -102,6 +102,12 @@ public class GerenciadorDeTarefas implements GerenciadorDeTarefasInterface{
     }
 
     @Override
+    public Tarefa marcarComoConcluida(int id) {
+        tarefas.get(id).setStatus(StatusTarefa.CONCLUIDA);
+        return tarefas.get(id);
+    }
+
+    @Override
     public int geraId() {
         return id++;
     }

@@ -1,6 +1,7 @@
 package com.goivo.api_gerenciador_tarefas.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goivo.api_gerenciador_tarefas.GerenciadorDeTarefas;
+import com.goivo.api_gerenciador_tarefas.StatusTarefa;
 import com.goivo.api_gerenciador_tarefas.Tarefa;
 
 @RestController
@@ -34,7 +36,7 @@ public class TarefasController {
         if (filtroStatus == null) {
             return ResponseEntity.ok(gerenciadorDeTarefas.listarTarefas());
         }
-        return ResponseEntity.ok(gerenciadorDeTarefas.listarTarefas(filtroStatus));
+        return ResponseEntity.ok(gerenciadorDeTarefas.listarTarefas(filtroStatus.toUpperCase()));
     }
 
     @GetMapping("/{id}")
@@ -53,4 +55,33 @@ public class TarefasController {
         gerenciadorDeTarefas.excluirTarefaporId(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/nomes")
+    public ResponseEntity<List<String>> listarNomesTarefas() {
+        return ResponseEntity.ok(gerenciadorDeTarefas.listarNomesTarefas());
+    }
+
+    @GetMapping("/agrupar")
+    public ResponseEntity<Map<StatusTarefa, List<Tarefa>>> agruparPorStatus() {
+        return ResponseEntity.ok(gerenciadorDeTarefas.agruparPorStatus());
+    }
+
+    /*/
+    @GetMapping("/{status}")
+    public ResponseEntity<List<Tarefa>> ListarTarefasPorStatus(@PathVariable("status") String status) {
+        return ResponseEntity.ok(gerenciadorDeTarefas.listarTarefas(status.toUpperCase()));
+    }
+    /*/ 
+
+    @GetMapping("/{status}/contar")
+    public ResponseEntity<Integer> contarTarefasPorStatus (@PathVariable("status") String status) {
+        return ResponseEntity.ok(gerenciadorDeTarefas.contarTarefasPorStatus(status.toUpperCase()));
+    }
+    
+    @PutMapping("/{id}/concluir")
+    public ResponseEntity<Tarefa> concluirTarefa(@PathVariable("id") int id) {
+        Tarefa tarefaConcluida = gerenciadorDeTarefas.marcarComoConcluida(id);
+        return ResponseEntity.ok(tarefaConcluida);
+    }
+
 }
